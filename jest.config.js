@@ -59,7 +59,7 @@ module.exports = {
         '\\.(css|less|styl|scss|sass|sss)$': 'identity-obj-proxy'
     },
 
-    roots: [''],
+    roots: ['src/components/Comments'],
     testURL: 'http://localhost/',
     // timers: // [string]
     setupTestFrameworkScriptFile: '<rootDir>/enzyme.js',

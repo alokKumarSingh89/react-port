@@ -1,15 +1,18 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import toJson from "enzyme-to-json";
 import CommentControls from "./CommentControls";
+import { wrap } from "module";
 
-const props = {
-  classes: {}
-};
-describe("<CommentControls> ", () => {
-  it("<CommentControls> snapshot ", () => {
-    const wrapper = shallow(<CommentControls {...props} />);
-    console.log(wrapper.prop());
+const props = {};
+describe("<CommentControls>", () => {
+  it("<CommentControls> snapshort ", () => {
+    let wrapper = shallow(<CommentControls {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
+  });
+  it("<CommentControls> classname should null ", () => {
+    let wrapper = mount(<CommentControls {...props} />);
+    console.log(wrapper.instance().props.classes);
+    expect(wrapper.instance().props.classes).toBeUndefined();
   });
 });

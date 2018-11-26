@@ -1,5 +1,5 @@
 import React from "react";
-import { shallow } from "enzyme";
+import { shallow, mount } from "enzyme";
 import toJson from "enzyme-to-json";
 import CommentMsg from "./CommentMsg";
 const props = {
@@ -7,7 +7,7 @@ const props = {
 };
 describe("<CommentHeader> ", () => {
   it("<CommentHeader> snapshot ", () => {
-    const wrapper = shallow(<CommentMsg {...props} />);
+    const wrapper = mount(<CommentMsg {...props} />);
     expect(toJson(wrapper)).toMatchSnapshot();
   });
 });
