@@ -30,7 +30,8 @@ module.exports = {
         '!src/configs/*',
         '!src/theme/*',
         'src/**/*.{js,jsx}',
-        '!**/node_modules/**'
+        '!**/node_modules/**',
+        '!src/components/Form/FormField/SlateEditor'
     ],
 
     // https://facebook.github.io/jest/docs/en/configuration.html#coveragedirectory-string
@@ -59,7 +60,7 @@ module.exports = {
         '\\.(css|less|styl|scss|sass|sss)$': 'identity-obj-proxy'
     },
 
-    roots: ['src/components/Comments'],
+    roots: ['src/test'],
     testURL: 'http://localhost/',
     // timers: // [string]
     setupTestFrameworkScriptFile: '<rootDir>/enzyme.js',

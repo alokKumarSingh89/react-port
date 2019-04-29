@@ -98,7 +98,6 @@ class Tabs extends React.Component {
     return (
       <Drawer
         variant="persistent"
-        // containerStyle={{ transform: "none" }}
         classes={{
           paper: classNames(
             classes.drawerPaper,

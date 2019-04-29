@@ -2,7 +2,12 @@ import configDeterminator from "../configs/configDeterminator";
 import axios from "axios";
 
 export const getAllAssignmentForUser = emailId => {
-  const url = "assignment.json";
-  // const url = configDeterminator.cmpApiEndpoint + "/assignments?search=" + emailId;
-  return axios.get(url);
+  return axios.get(
+    configDeterminator.cmpApiEndpoint + "/assignments?search=" + emailId,
+    {
+      headers: {
+        Accept: "application/json"
+      }
+    }
+  );
 };

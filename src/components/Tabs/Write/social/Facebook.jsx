@@ -81,7 +81,9 @@ const Facebook = props => {
   };
   return (
     <div className={"write-graphics-block content-block"}>
-      <SectionHeader title="Facebook" id="Facebook" 
+      <SectionHeader
+        title="Facebook"
+        id="Facebook"
         tooltip="<b>Social Media Posts:</b>
         <ul>
           <li>Each article requires 3 tweets, 2  LinkedIn, 2 Facebook</li>
@@ -90,10 +92,11 @@ const Facebook = props => {
         </ul>
         <b>Twitter:</b> Write with strong Call to Action (CTA) to optimize clicks to the site.<br />
         <b>LinkedIn:</b> Charts/infographics do really well on this channel<br />
-        <b>Facebook:</b> Please write for more of an investor audience, with the objective of getting advisors to share." 
+        <b>Facebook:</b> Please write for more of an investor audience, with the objective of getting advisors to share."
       />
-      {props.Facebooks.filter(Facebook => Facebook.facebookId != "").map(
-        (Facebook, index) => (
+      {props.Facebooks
+        .filter(Facebook => Facebook.facebookId != "")
+        .map((Facebook, index) => (
           <FacebookItem
             value={Facebook}
             key={Facebook.facebookId}
@@ -102,15 +105,14 @@ const Facebook = props => {
             handleDeleteItem={handleDeleteItem}
             saveInStore={saveInStore}
           />
-        )
-      )}
+        ))}
       <AddFacebook addPost={addPost} />
     </div>
   );
 };
 const mapStateToProps = state => {
   return {
-    Facebooks: state.write.write.facebook,
+    Facebooks: state.write.write && state.write.write.facebook,
     user: state.user,
     store: state.write
   };
@@ -123,8 +125,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Facebook)
+  connect(mapStateToProps, mapDispatchToProps)(Facebook)
 );

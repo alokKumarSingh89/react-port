@@ -27,7 +27,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import orange from "@material-ui/core/colors/orange";
-import get from "lodash/get";
 
 const styles = theme => ({
   root: {
@@ -111,10 +110,10 @@ function DashBoard(props) {
   if (loading)
     return (
       <div>
-        <ReactLoading type={"bubbles"} color={"#000000"} />{" "}
+        <ReactLoading type={"bubbles"} color={"#000000"} />
       </div>
     );
-  if (error) return <div> Error while fetching data </div>;
+  if (error) return <div>Error while fetching data </div>;
   if (R.isEmpty(allAssignments)) return "";
   if (R.isEmpty(allAssignments) || R.isEmpty(allAssignments.assignments))
     return (
@@ -124,16 +123,16 @@ function DashBoard(props) {
           <Grid container spacing={40}>
             <Grid item xs={12}>
               <Typography gutterBottom variant="headline" component="h2">
-                There is no content assigned to you.{" "}
-              </Typography>{" "}
+                There is no content assigned to you.
+              </Typography>
               <Typography>
                 {" "}
                 Any content that is assigned to you will appear on your
-                homepage.{" "}
-              </Typography>{" "}
-            </Grid>{" "}
-          </Grid>{" "}
-        </main>{" "}
+                homepage.
+              </Typography>
+            </Grid>
+          </Grid>
+        </main>
       </div>
     );
 
@@ -151,94 +150,79 @@ function DashBoard(props) {
             <Grid item xs={10}>
               <Toolbar className={"tab-header"}>
                 <Typography variant="title">
-                  Assignments from Percolate{" "}
-                </Typography>{" "}
+                  Assignments from Percolate
+                </Typography>
               </Toolbar>
+
               <Paper className={classes.root}>
                 <Table className={classes.table}>
                   <TableHead className={classes.contentHeading}>
                     <TableRow>
-                      <CustomTableCell> CONTENT </CustomTableCell>{" "}
-                      <CustomTableCell numeric> STATUS </CustomTableCell>{" "}
-                      <CustomTableCell numeric>
-                        {" "}
-                        DATE SCHEDULED{" "}
-                      </CustomTableCell>{" "}
-                      <CustomTableCell numeric> CHANNEL </CustomTableCell>{" "}
-                      <CustomTableCell numeric> PRIMARY TEAM </CustomTableCell>{" "}
-                      <CustomTableCell numeric> ASSIGNEE </CustomTableCell>{" "}
+                      <CustomTableCell>CONTENT</CustomTableCell>
+                      <CustomTableCell numeric>STATUS</CustomTableCell>
+                      <CustomTableCell numeric>DATE SCHEDULED</CustomTableCell>
+                      <CustomTableCell numeric>CHANNEL</CustomTableCell>
+                      <CustomTableCell numeric>PRIMARY TEAM</CustomTableCell>
+                      <CustomTableCell numeric>ASSIGNEE</CustomTableCell>
                       <CustomTableCell numeric />
-                    </TableRow>{" "}
-                  </TableHead>{" "}
+                    </TableRow>
+                  </TableHead>
                   <TableBody>
-                    {" "}
-                    {Object.keys(get(allAssignments, "assignments", {})).map(
-                      (assignment, index) => {
-                        return (
-                          <TableRow className={classes.container} key={index}>
-                            <CustomTableCell component="th" scope="row">
-                              {" "}
-                              {
-                                allAssignments.assignments[assignment].title
-                              }{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              {" "}
-                              {
-                                allAssignments.assignments[assignment].status
-                              }{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              {" "}
-                              {Moment(
+                    {Object.keys(
+                      allAssignments.assignments
+                    ).map((assignment, index) => {
+                      return (
+                        <TableRow className={classes.container} key={index}>
+                          <CustomTableCell component="th" scope="row">
+                            {allAssignments.assignments[assignment].title}
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            {allAssignments.assignments[assignment].status}
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            {Moment(
+                              allAssignments.assignments[assignment].liveAt
+                            ).isValid() ? (
+                              Moment(
                                 allAssignments.assignments[assignment].liveAt
-                              ).isValid()
-                                ? Moment(
-                                    allAssignments.assignments[assignment]
-                                      .liveAt
-                                  ).format("MMMM Do, YYYY")
-                                : "TBD"}{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              {" "}
-                              {
-                                allAssignments.assignments[assignment].channel
-                              }{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              {" "}
-                              {allAssignments.assignments[assignment].team}{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              <Avatar className={classes.fabButton}>
-                                {" "}
-                                {userDetails.user}{" "}
-                              </Avatar>{" "}
-                            </CustomTableCell>{" "}
-                            <CustomTableCell numeric>
-                              <Button
-                                component={Link}
-                                to={
-                                  "/" +
-                                  allAssignments.assignments[assignment].id
-                                }
-                                size="small"
-                                className={classes.button}
-                              >
-                                Edit{" "}
-                              </Button>{" "}
-                            </CustomTableCell>{" "}
-                          </TableRow>
-                        );
-                      }
-                    )}{" "}
-                  </TableBody>{" "}
-                </Table>{" "}
-              </Paper>{" "}
-            </Grid>{" "}
+                              ).format("MMMM Do, YYYY")
+                            ) : (
+                              "TBD"
+                            )}
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            {allAssignments.assignments[assignment].channel}
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            {allAssignments.assignments[assignment].team}
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            <Avatar className={classes.fabButton}>
+                              {userDetails.user}
+                            </Avatar>
+                          </CustomTableCell>
+                          <CustomTableCell numeric>
+                            <Button
+                              component={Link}
+                              to={
+                                "/" + allAssignments.assignments[assignment].id
+                              }
+                              size="small"
+                              className={classes.button}
+                            >
+                              Edit
+                            </Button>
+                          </CustomTableCell>
+                        </TableRow>
+                      );
+                    })}
+                  </TableBody>
+                </Table>
+              </Paper>
+            </Grid>
           </Grid>{" "}
-        </div>{" "}
-      </main>{" "}
+        </div>
+      </main>
     </div>
   );
 }

@@ -8,8 +8,9 @@ import TwitterItem from "./Twitter/TwitterItem";
 import _ from "lodash";
 import * as social_action from "../../../../redux/actions/writeAction";
 import { uploadSocialFileApi } from "../../../../api/writeApi";
+import ReactLoading from "react-loading";
+
 const styles = theme => {
-  console.log(theme);
   return {
     root: {}
   };
@@ -81,6 +82,12 @@ const Twitter = props => {
       props.addTwitterItemRequest({ newtwitter });
     }
   };
+  if (props.store.loading)
+    return (
+      <div>
+        <ReactLoading type={"bubbles"} color={"#000000"} />
+      </div>
+    );
   return (
     <div className={"write-graphics-block content-block"}>
       <SectionHeader
@@ -114,9 +121,9 @@ const Twitter = props => {
 };
 const mapStateToProps = state => {
   return {
-    twitters: state.write.write.twitter,
-    user: state.user,
-    store: state.write
+    twitters: state.write.write && state.write.write.twitter,
+    user: state && state.user,
+    store: state && state.write
   };
 };
 const mapDispatchToProps = dispatch => {
@@ -126,8 +133,5 @@ const mapDispatchToProps = dispatch => {
 };
 
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Twitter)
+  connect(mapStateToProps, mapDispatchToProps)(Twitter)
 );

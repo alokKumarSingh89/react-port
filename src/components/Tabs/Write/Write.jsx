@@ -1,74 +1,130 @@
-import React from "react";
+import React, { Fragment } from "react";
 import { connect } from "react-redux";
-import Copy from "./Copy";
+import { Toolbar, Typography } from "@material-ui/core";
+import * as R from "ramda";
+import scrollToComponent from "react-scroll-to-component";
+import Copy from "./Copy/container";
 import Graphics from "./Graphics/Graphics";
 import Backups from "./Backups/Backups";
 import { fetchAllFieldsRequest } from "../../../redux/actions/writeAction";
-import { Toolbar, Typography } from "@material-ui/core";
+import { unHideTabs } from "../../../redux/actions/dashBoardActions";
 import Modal from "../../Modal/Modal";
-import CommentList from "../../Comments/CommentList";
+import Comments from "../../Comments";
+import { toggleComment } from "../../../redux/actions/commentAction";
 import Twitter from "./social/Twitter";
 import Linkedin from "./social/Linkedin";
 import Facebook from "./social/Facebook";
-import { Sections } from "./Section";
-import scrollToComponent from "react-scroll-to-component";
+
+import { JumpLink } from "./JumpLink";
 
 class Write extends React.Component {
-  constructor() {
-    super();
-    this.sections = [
-      {
-        refname: "copy",
-        name: "Article Copy"
-      },
-      {
-        refname: "graphic",
-        name: "Article Graphic"
-      },
-      {
-        refname: "twitter",
-        name: "Twitter"
-      },
-      {
-        refname: "linkedin",
-        name: "Linkedin"
-      },
-      {
-        refname: "facebook",
-        name: "Facebook"
-      },
-      {
-        refname: "backups",
-        name: "Backup"
-      }
-    ];
-  }
   componentDidMount() {
-    this.props.fetchAllFieldsRequest(this.props);
+    this.props.fetchAllFieldsRequest(this.props.assignment.id);
   }
+  section = [
+    <Copy
+      ref={section => {
+        this.Copy = section;
+      }}
+    />,
+    <Graphics
+      ref={section => {
+        this.Graphics = section;
+      }}
+    />,
+    <Twitter
+      ref={section => {
+        this.twitter = section;
+      }}
+    />,
+    <Linkedin
+      ref={section => {
+        this.linkedin = section;
+      }}
+    />,
+    <Facebook
+      ref={section => {
+        this.facebook = section;
+      }}
+    />,
+    <Backups
+      makeApiCall={this.makeApiCall}
+      ref={section => {
+        this.Backups = section;
+      }}
+    />
+  ];
   renderJumpLink() {
     return (
       <Toolbar className={"tab-nav"}>
-        {this.sections.map(section => (
-          <Sections
-            key={section.name}
-            name={section.name}
-            component={section.refname}
-            action={() =>
-              scrollToComponent(this.refs[section.refname], {
-                offset: 0,
-                align: "top",
-                duration: 1500
-              })
-            }
-          />
-        ))}
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.Copy, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Article Copy"
+        />
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.Graphics, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Article Graphic"
+        />
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.twitter, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Twitter"
+        />
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.linkedin, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Linkedin"
+        />
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.facebook, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Facebook"
+        />
+        <JumpLink
+          scrollToSection={() =>
+            scrollToComponent(this.Backups, {
+              offset: 0,
+              align: "top",
+              duration: 1500
+            })
+          }
+          name="Backup"
+        />
       </Toolbar>
     );
   }
   render() {
-    const { write } = this.props;
-    if (write.error) return "Error from server";
+    const { writeList, loading } = this.props;
+    if (writeList && R.isEmpty(writeList.write)) return null; //this.props.history.push("/");
+    if (writeList.error) return "Error from server";
+    console.log(writeList);
     return (
       <div>
         <Toolbar className={"tab-header"}>
@@ -76,22 +132,15 @@ class Write extends React.Component {
         </Toolbar>
 
         <div className="write-block">
-          {this.renderJumpLink()}
-          <Copy ref="copy" />
-          {this.renderJumpLink()}
-          <Graphics ref="graphic" />
-          {this.renderJumpLink()}
-          <Twitter ref="twitter" />
-          {this.renderJumpLink()}
-          <Linkedin ref="linkedin" />
-          {this.renderJumpLink()}
-          <Facebook ref="facebook" />
-          {this.renderJumpLink()}
-          <Backups ref="backups" />
-
+          {this.section.map((item, index) => (
+            <Fragment key={index}>
+              {this.renderJumpLink()}
+              {item}
+            </Fragment>
+          ))}
           {this.props.comment.commentToggle && (
             <Modal>
-              <CommentList />
+              <Comments />
             </Modal>
           )}
         </div>
@@ -100,14 +149,20 @@ class Write extends React.Component {
   }
 }
 
-const mapStateToProps = ({ write, comment }) => {
+const mapStateToProps = ({ write, assignments, comment }) => {
   return {
-    write: write,
+    writeList: write,
+    assignment: assignments.assignment,
     comment
   };
 };
 
-export default connect(
+const ConnectedComponent = connect(
   mapStateToProps,
-  { fetchAllFieldsRequest }
+  {
+    toggleComment,
+    unHideTabs,
+    fetchAllFieldsRequest
+  }
 )(Write);
+export default ConnectedComponent;

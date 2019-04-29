@@ -18,12 +18,17 @@ class AssignmentDetailsContainer extends Component {
   componentDidMount() {
     if (!R.test(/research/, this.props.postId)) {
       this.props.fetchAssignmentDetails(this.props.postId);
+      this.props.fetchAllFieldsRequest(this.props.postId);
     }
     this.props.unHideTabs();
   }
 
   componentDidUpdate() {
-    if (!R.isEmpty(this.props.assignment) && this.props.userInitials) {
+    if (
+      !R.isEmpty(this.props.assignment) &&
+      this.props.userInitials &&
+      this.props.writeData.error
+    ) {
       this.createAssignmentDetails(this.props);
       this.props.fetchAllFieldsRequest(this.props.postId);
     }
@@ -35,7 +40,7 @@ class AssignmentDetailsContainer extends Component {
       assignmentName: assignment.name,
       templateName: "web-template",
       userInitials: userInitials,
-      workfrontJobId: assignment.metaData["Workfront job #"]
+      workfrontJobId: assignment.metaData["Workfront Job #"]
     };
     this.props.createAssignment(assignmentData);
   }
@@ -45,12 +50,13 @@ class AssignmentDetailsContainer extends Component {
   }
 }
 
-const mapStateToProps = ({ assignments, user }) => {
+const mapStateToProps = ({ assignments, user, write }) => {
   return {
     loading: assignments.loading,
     assignment: assignments.assignment,
     error: assignments.error,
-    userInitials: user.userId
+    userInitials: user.userId,
+    writeData: write
   };
 };
 
@@ -65,7 +71,6 @@ const mapDispatchToProps = dispatch => ({
 AssignmentDetailsContainer.propTypes = {
   fetchAssignmentDetails: PropTypes.func.isRequired
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(AssignmentDetailsContainer);
+export default connect(mapStateToProps, mapDispatchToProps)(
+  AssignmentDetailsContainer
+);

@@ -2,7 +2,7 @@ import configDeterminator from "../configs/configDeterminator";
 import axios from "axios";
 import _ from "lodash";
 export const getWrite = postId => {
-  let url = "write.json";
+  let url = "/getApi.json";
   // let url = configDeterminator.cwbApiEndpoint + "/assignment" + postId;
   return axios.get(url);
 };
@@ -121,3 +121,7 @@ export const uploadSocialFileApi = ({
     );
   }
 };
+
+export const searchDiscloser=() => {
+	return axios.get("/search.json");
+}

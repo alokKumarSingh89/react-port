@@ -72,7 +72,9 @@ const Card = ({ title, classes, postId }) => {
     document.execCommand("copy");
   }
   function shareURLByEmail() {
-    document.location.href=`mailto:?subject=CWB link shared with you&body=${window.location.host}/${postId}`;
+    document.location.href = `mailto:?subject=CWB link shared with you&body=https://${
+      window.location.host
+    }/${postId}`;
   }
   return (
     <div className="card">

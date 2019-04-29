@@ -1,0 +1,76 @@
+{
+  "assignments": [
+    {
+      "id": "post:41714771",
+      "title": "1813193 RIA_March Topicals_2018_Web",
+      "status": null,
+      "liveAt": "2018-08-17T20:57:00+00:00",
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "ASRP"
+    },
+    {
+      "id": "post:43506650",
+      "title": "1813193 RIA_March Topicals_2018_Web",
+      "status": null,
+      "liveAt": "2018-06-03T22:08:00+00:00",
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "ASRP"
+    },
+    {
+      "id": "post:42617442",
+      "title": "INYVIKN test content2",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "ASRP"
+    },
+    {
+      "id": "post:43441775",
+      "title": "Test vijay 2",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "Sandbox Testing"
+    },
+    {
+      "id": "post:43480225",
+      "title": "Proof HQ testing Panneer",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "Sandbox Testing"
+    },
+    {
+      "id": "post:43471819",
+      "title": "testing proof hq",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "ASRP"
+    },
+    {
+      "id": "post:43471828",
+      "title": "testing proofhq2",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "ASRP"
+    },
+    {
+      "id": "post:43471844",
+      "title": "testing proofhq3",
+      "status": null,
+      "liveAt": null,
+      "channel": "Web",
+      "template": "Web Article",
+      "team": "Sandbox Testing"
+    }
+  ]
+}

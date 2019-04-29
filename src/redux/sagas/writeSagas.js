@@ -1,5 +1,5 @@
 // import saga helper function
-import { put, takeLatest, call } from "redux-saga/effects";
+import { put, takeLatest, call, select } from "redux-saga/effects";
 
 // import action constant
 import {
@@ -127,25 +127,27 @@ function* createProof({ payload }) {
   try {
     yield put(showSuccessMsg("Proof is being generated"));
     let res;
-    if (!payload.proofList) {
+    const state = yield select();
+    let proofList = state.write.proofUrl;
+    if (proofList.length < 1) {
       res = yield call(createProofApi, {
         assignmentId: payload.assignmentId,
         recipients: payload.recipients
       });
     } else {
       // console.log(payload.proofList, payload.proofList.length);
-      let parentFileID = payload.proofList[payload.proofList.length - 1].fileId;
+      let parentFileID = proofList[proofList.length - 1].fileId;
       res = yield call(createProofVersionApi, {
         assignmentId: payload.assignmentId,
         recipients: payload.recipients,
         parentFileID
       });
     }
-    let proofUrl = payload.proofList
-      ? payload.proofList.map(proof => proof.proofUrl + "|")
-      : "";
+    let proofUrl =
+      proofList.length > 0 ? proofList.map(proof => proof.proofUrl) : [];
     let fileId = res.data.fileId;
-    proofUrl += res.data.proofUrl;
+    proofUrl.push(res.data.proofUrl);
+    proofUrl = proofUrl.join("|");
 
     yield call(createPersistproofAPI, {
       proofUrl,

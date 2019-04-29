@@ -3,6 +3,7 @@ import orange from "@material-ui/core/colors/orange";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 import { Button, Typography, Paper } from "@material-ui/core";
+import Search from "../../Search/Search";
 
 const styles = theme => ({
   root: {
@@ -44,7 +45,7 @@ function Resource(props) {
           articles, image, or other research to assist you in your work. In the
           future this service will be incorporated into this page.
         </Typography>
-        <a href={props.daaUrl} className="anchor-text" target="_blank">
+        {/* <a href={props.daaUrl} className="anchor-text" target="_blank">
           <Button
             variant="contained"
             size="large"
@@ -57,7 +58,8 @@ function Resource(props) {
           >
             DISCOVER
           </Button>
-        </a>
+				</a> */}
+				<Search/>
       </div>
     </div>
   );

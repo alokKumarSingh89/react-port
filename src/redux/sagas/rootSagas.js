@@ -6,6 +6,7 @@ import * as writeSagas from "./writeSagas";
 import * as commentSagas from "./commentSaga";
 import * as dashBoardSagas from "./dashBoardSagas";
 import * as tagFilterSagas from "./tagFilterSagas";
+import * as searchSaga from "./search.saga"
 // notice how we now only export the rootSaga
 // single entry point to start all Sagas at once
 export default function* rootSaga() {
@@ -17,7 +18,8 @@ export default function* rootSaga() {
       ...Object.values(commentSagas),
       ...Object.values(writeSagas),
       ...Object.values(tagFilterSagas),
-      ...Object.values(dashBoardSagas)
+      ...Object.values(dashBoardSagas),
+      ...Object.values(searchSaga)
     ].map(fork)
   );
 }

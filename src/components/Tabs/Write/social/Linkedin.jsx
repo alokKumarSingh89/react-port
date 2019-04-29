@@ -82,7 +82,10 @@ const Linkedin = props => {
   };
   return (
     <div className={"write-graphics-block content-block"}>
-      <SectionHeader title="Linkedin" id="linkedIn" tooltip="<b>Social Media Posts:</b>
+      <SectionHeader
+        title="Linkedin"
+        id="linkedIn"
+        tooltip="<b>Social Media Posts:</b>
         <ul>
           <li>Each article requires 3 tweets, 2  LinkedIn, 2 Facebook</li>
           <li>If you feel there may be interest on Facebook, please include a Facebook post as well.</li>
@@ -90,11 +93,12 @@ const Linkedin = props => {
         </ul>
         <b>Twitter:</b> Write with strong Call to Action (CTA) to optimize clicks to the site.<br />
         <b>LinkedIn:</b> Charts/infographics do really well on this channel<br />
-        <b>Facebook:</b> Please write for more of an investor audience, with the objective of getting advisors to share."  
+        <b>Facebook:</b> Please write for more of an investor audience, with the objective of getting advisors to share."
       />
 
-      {props.Linkedins.filter(linkedin => linkedin.linkedinId != "").map(
-        (Linkedin, index) => (
+      {props.Linkedins
+        .filter(linkedin => linkedin.linkedinId != "")
+        .map((Linkedin, index) => (
           <LinkedinItem
             value={Linkedin}
             key={Linkedin.linkedinId}
@@ -103,15 +107,14 @@ const Linkedin = props => {
             handleDeleteItem={handleDeleteItem}
             saveInStore={saveInStore}
           />
-        )
-      )}
+        ))}
       <AddLinkedin addPost={addPost} />
     </div>
   );
 };
 const mapStateToProps = state => {
   return {
-    Linkedins: state.write.write.linkedIn,
+    Linkedins: state.write.write && state.write.write.linkedIn,
     user: state.user,
     store: state.write
   };
@@ -122,8 +125,5 @@ const mapDispatchToProps = dispatch => {
   };
 };
 export default withStyles(styles)(
-  connect(
-    mapStateToProps,
-    mapDispatchToProps
-  )(Linkedin)
+  connect(mapStateToProps, mapDispatchToProps)(Linkedin)
 );

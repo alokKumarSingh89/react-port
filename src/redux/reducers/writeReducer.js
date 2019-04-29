@@ -66,6 +66,7 @@ const writeReducer = (state = initialState, action) => {
           return { proofUrl: proof, fileId: proofFileId };
         });
       }
+      proofUrl = proofUrl || [];
       return {
         ...state,
         write: action.payload,

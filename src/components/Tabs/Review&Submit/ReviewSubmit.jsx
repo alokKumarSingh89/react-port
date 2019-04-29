@@ -58,6 +58,7 @@ const styles = theme => {
 };
 const ReviewSubmit = props => {
   const { classes, writes, assignment } = props;
+  const proofLists = Object.assign([], writes.proofUrl);
   const updateProofAction = event => {
     props.updateProofAction({ proofStatus: event.target.value });
   };
@@ -124,8 +125,8 @@ const ReviewSubmit = props => {
               >
                 Send Proof
               </Button>
-              {writes.proofUrl &&
-                writes.proofUrl.reverse().map((proof, index) => {
+              {proofLists.length > 0 &&
+                proofLists.reverse().map((proof, index) => {
                   return (
                     <Button
                       href={proof.proofUrl}

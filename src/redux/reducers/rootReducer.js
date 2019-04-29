@@ -7,7 +7,7 @@ import writeReducer from "./writeReducer";
 import commentReducer from "./commentReducer";
 import dashBoardReducer from "./dashBoardReducer";
 import tagFilterReducer from './tagFilterReducer'
-
+import {searchReducer} from './search.reducer'
 // Add imported reducers here to make them available to the app via Provider in index.js
 const rootReducer = combineReducers({
   userAssignments: dashBoardReducer,
@@ -16,7 +16,8 @@ const rootReducer = combineReducers({
   disclosures:disclosureReducer,
   write:writeReducer,
   comment:commentReducer,
-  filters:tagFilterReducer
+	filters: tagFilterReducer,
+	search:searchReducer
 });
 
 export default rootReducer;

@@ -1,10 +1,8 @@
 import React, { Fragment } from "react";
 import PropTypes from "prop-types";
-import { connect } from "react-redux";
+import { withStyles } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Grid from "@material-ui/core/Grid";
-import { withRouter } from "react-router-dom";
-import { withStyles } from "@material-ui/core";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
@@ -14,11 +12,11 @@ import PageNameField from "./PageNameField";
 import orange from "@material-ui/core/colors/orange";
 import classNames from "classnames";
 import CWBTabs from "../Tabs/CWBTabs/Tabs";
-import { toggleComment } from "../../redux/actions/commentAction";
+import { connect } from "react-redux";
 import Moment from "moment";
-
 import { uploadCopyFormData } from "../../redux/actions/writeAction";
-
+import { toggleComment } from "../../redux/actions/commentAction";
+import { withRouter } from "react-router";
 import ShareWithOthers from "../Popups/ShareWithOthers";
 const styles = theme => ({
   root: {
@@ -75,45 +73,37 @@ const styles = theme => ({
   }
 });
 
-export class TopBar extends React.Component {
+class TopBar extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {
-      open: false
-    };
+    this.saveTheForm = this.saveTheForm.bind(this);
+    this.toggleComment = this.toggleComment.bind(this);
     props.history.listen((location, action) => {
-      this.setState({
-        path: location.pathname
-      });
+      this.setState({ path: location.pathname });
     });
   }
   toggleComment() {
     this.props.toggleComment(!this.props.comments.commentToggle);
   }
-  handleDrawerOpen() {
-    this.setState({
-      open: !this.state.open
-    });
-  }
-  shareUrl() {
-    this.setState({
-      popup: !this.state.popup
-    });
-  }
+  handleDrawerOpen = () => {
+    this.setState({ open: !this.state.open });
+  };
+  shareUrl = () => {
+    this.setState({ popup: !this.state.popup });
+  };
   componentDidMount() {
     this.timer = setInterval(() => this.saveTheForm(), 600000);
   }
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-
+  state = {
+    open: false
+  };
   saveTheForm(show) {
     const { dashBoardLoaded } = this.props.user;
     !dashBoardLoaded &&
-      this.props.uploadCopyFormData({
-        formData: this.props,
-        show
-      });
+      this.props.uploadCopyFormData({ formData: this.props, show });
   }
   render() {
     const { user, dashBoardLoaded, assignment } = this.props.user;
@@ -142,7 +132,7 @@ export class TopBar extends React.Component {
                   <MenuIcon />
                 </IconButton>
                 <Typography variant="subheading" color="inherit">
-                  React Project
+                  Creative WorkBench:
                 </Typography>
                 <Typography
                   variant="subheading"
@@ -150,9 +140,9 @@ export class TopBar extends React.Component {
                   noWrap
                   className={classes.toolbarTitle}
                 >
-                  <PageNameField assignmentDetails={this.props} />{" "}
-                </Typography>{" "}
-                {dashBoardLoaded && (
+                  <PageNameField assignmentDetails={this.props} />
+                </Typography>
+                {!dashBoardLoaded && (
                   <Typography component="span" className={classes.autoSave}>
                     Last Saved at{" "}
                     {this.props.write.saveTime ||
@@ -160,18 +150,18 @@ export class TopBar extends React.Component {
                         this.props.write.write.assignment &&
                         Moment(
                           this.props.write.write.assignment.updatedAt
-                        ).format("MM/DD/YY [@] h:mm a"))}{" "}
+                        ).format("MM/DD/YY [@] h:mm a"))}
                   </Typography>
-                )}{" "}
-                {dashBoardLoaded && (
+                )}
+                {!dashBoardLoaded && (
                   <Fragment>
                     <Button
                       variant="contained"
                       className={classes.button}
                       onClick={() => this.saveTheForm(true)}
                     >
-                      Save{" "}
-                    </Button>{" "}
+                      Save
+                    </Button>
                     <Button
                       variant="contained"
                       className={
@@ -180,48 +170,47 @@ export class TopBar extends React.Component {
                           : classes.disabledButton
                       }
                       onClick={this.toggleComment}
-                      // disabled={dashBoardLoaded || this.state.path !== "/write"}
+                      disabled={dashBoardLoaded || this.state.path !== "/write"}
                     >
-                      Comment{" "}
-                    </Button>{" "}
+                      Comment
+                    </Button>
                     <Button
                       variant="contained"
                       className={classes.button}
                       onClick={this.shareUrl}
-                      // disabled={!this.props.assignments.assignment.id}
+                      disabled={!this.props.assignments.assignment.id}
                     >
-                      Share{" "}
-                    </Button>{" "}
+                      Share
+                    </Button>
                   </Fragment>
                 )}
+
                 <Button
                   variant="fab"
                   size="small"
                   className={classes.fabButton}
                 >
-                  {user}{" "}
-                </Button>{" "}
-              </Toolbar>{" "}
-            </Grid>{" "}
-          </Grid>{" "}
-        </AppBar>{" "}
+                  {user}
+                </Button>
+              </Toolbar>
+            </Grid>
+          </Grid>
+        </AppBar>
         {this.state.popup && (
           <ShareWithOthers
             handleClose={this.shareUrl}
             postId={this.props.assignments.assignment.id}
           />
-        )}{" "}
-        {dashBoardLoaded && (
+        )}
+        {!dashBoardLoaded && (
           <CWBTabs open={this.state.open} saveTheForm={this.saveTheForm} />
-        )}{" "}
+        )}
       </Fragment>
     );
   }
 }
 
-TopBar.propTypes = {
-  classes: PropTypes.object.isRequired
-};
+TopBar.propTypes = { classes: PropTypes.object.isRequired };
 const mapStateToProps = state => {
   return {
     write: state.write,

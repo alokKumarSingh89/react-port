@@ -8,9 +8,7 @@ import { saveUserDetailsToStore } from "../../redux/actions/userActions";
 import DashBoardComponent from "../../components/DashBoard/DashBoardComponent";
 import * as R from "ramda";
 import { withAuth } from "@okta/okta-react";
-import get from "lodash/get";
 import { hideTabs } from "../../redux/actions/dashBoardActions";
-
 import {
   fetchAllFieldsSuccess,
   updateUserLoginStatus,
@@ -27,12 +25,12 @@ class DashBoardContainer extends Component {
     await this.props.auth.getUser().then(
       user => {
         this.fetchAllAssignments(user);
-        // this.props.updateUserLoginStatus({
-        //   email: user.email,
-        //   firstName: user.given_name,
-        //   lastName: user.family_name,
-        //   userInitials: user.preferred_username.split("@")[0]
-        // });
+        this.props.updateUserLoginStatus({
+          email: user.email,
+          firstName: user.given_name,
+          lastName: user.family_name,
+          userInitials: user.preferred_username.split("@")[0]
+        });
       },
       error => {
         this.props.saveUserErrorDetails(error);
@@ -46,17 +44,17 @@ class DashBoardContainer extends Component {
   }
 
   fetchAllAssignments(user) {
-    // if (null != user) {
-    let emailId = get(user, "email", "");
-    this.props.fetchAllAssignments(emailId);
-    // this.props.hideTabs();
-    // }
+    if (null != user) {
+      let emailId = user.email;
+      this.props.fetchAllAssignments(emailId);
+      this.props.hideTabs();
+    }
   }
 
   render() {
     return (
       <div>
-        <DashBoard assignments={this.props} />{" "}
+        <DashBoard assignments={this.props} />
       </div>
     );
   }

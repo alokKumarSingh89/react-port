@@ -99,7 +99,7 @@ class Backups extends React.Component {
 const mapStateToProps = state => {
   return {
     store: state,
-    backups: state.write.write.backups
+    backups: state.write.write && state.write.write.backups
   };
 };
 
@@ -109,9 +109,8 @@ const mapDispatchToProps = dispatch => {
   };
 };
 
-const ConnectedComponent = connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Backups);
+const ConnectedComponent = connect(mapStateToProps, mapDispatchToProps)(
+  Backups
+);
 
 export default ConnectedComponent;
